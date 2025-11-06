@@ -1,59 +1,183 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# TASK FLOW
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+API для управления задачами с поддержкой мультиязычности (ru / en)
 
-## About Laravel
+## Описание
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Task Flow - это RESTful API для управления проектами и задачами с расширенными возможностями:
+- Управление пользователями и ролями
+- Создание и управление проектами
+- Создание и отслеживание задач
+- Работа с медиафайлами (Spatie Media Library)
+- Мультиязычность (русский и английский)
+- Email уведомления
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Технологический стек
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Backend**: Laravel 11.x
+- **База данных**: PostgreSQL 15
+- **Контейнеризация**: Docker & Docker Compose
+- **Медиафайлы**: Spatie Media Library
+- **API**: RESTful API
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Быстрый старт
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 1. Клонирование репозитория
+```bash
+git clone <ссылка-на-репозиторий>
+cd task_flow
+```
 
-## Laravel Sponsors
+### 2. Создание файла окружения
+```bash
+cp .env.example .env
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Настройте следующие параметры в `.env`:
 
-### Premium Partners
+#### Настройки базы данных
+```env
+DB_CONNECTION=pgsql
+DB_HOST=db
+DB_PORT=5432
+DB_DATABASE=task_flow_db
+DB_USERNAME=task_flow_user
+DB_PASSWORD=8rip88lizL
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+#### Настройки файлового хранилища
+```env
+FILESYSTEM_DISK=public
+```
 
-## Contributing
+### 3. Запуск Docker-контейнеров
+```bash
+docker-compose up -d --build
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Проверка запущенных контейнеров:
+```bash
+docker-compose ps
+```
 
-## Code of Conduct
+### 4. Установка зависимостей
+```bash
+docker exec -it task_flow_app composer install
+docker exec -it task_flow_app php artisan key:generate
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 5. Настройка Spatie Media Library
+```bash
+# Публикация конфигурации и миграций
+docker exec -it task_flow_app php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="medialibrary-migrations"
 
-## Security Vulnerabilities
+docker exec -it task_flow_app php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="medialibrary-config"
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# Создание символической ссылки для storage
+docker exec -it task_flow_app php artisan storage:link
+```
 
-## License
+### 6. Миграции и начальные данные
+```bash
+docker exec -it task_flow_app php artisan migrate --seed
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 7. Установка прав доступа
+```bash
+docker exec -it task_flow_app chmod -R 775 storage bootstrap/cache
+docker exec -it task_flow_app chown -R www-data:www-data storage bootstrap/cache
+```
+
+---
+
+## Основные команды
+
+### Работа с контейнерами
+```bash
+# Запуск контейнеров
+docker-compose up -d
+
+# Остановка контейнеров
+docker-compose down
+
+# Просмотр логов
+docker-compose logs -f app
+
+# Перезапуск контейнеров
+docker-compose restart
+```
+
+### Работа с приложением
+```bash
+# Вход в контейнер приложения
+docker exec -it task_flow_app bash
+
+# Запуск Artisan команд
+docker exec -it task_flow_app php artisan <command>
+
+# Очистка кэша
+docker exec -it task_flow_app php artisan cache:clear
+docker exec -it task_flow_app php artisan config:clear
+docker exec -it task_flow_app php artisan route:clear
+docker exec -it task_flow_app php artisan view:clear
+
+# Запуск тестов
+docker exec -it task_flow_app php artisan test
+
+# Создание нового контроллера
+docker exec -it task_flow_app php artisan make:controller <ControllerName>
+
+# Создание новой миграции
+docker exec -it task_flow_app php artisan make:migration <migration_name>
+```
+
+### Работа с базой данных
+```bash
+# Подключение к PostgreSQL
+docker exec -it task_flow_db psql -U task_flow_user -d task_flow_db
+
+# Сброс и повторный запуск миграций
+docker exec -it task_flow_app php artisan migrate:fresh
+
+# Сброс миграций с сидами
+docker exec -it task_flow_app php artisan migrate:fresh --seed
+
+# Откат последней миграции
+docker exec -it task_flow_app php artisan migrate:rollback
+```
+
+---
+
+## API Endpoints
+
+### Аутентификация
+```
+POST   /api/login           # Вход
+POST   /api/logout          # Выход
+```
+
+### Задачи
+```
+GET    /api/tasks           # Список задач
+GET    /api/tasks/{id}      # Просмотр задачи
+POST   /api/tasks           # Создание задачи
+PUT    /api/tasks/{id}      # Обновление задачи
+DELETE /api/tasks/{id}      # Удаление задачи
+```
+
+---
+
+## Мультиязычность
+
+Приложение поддерживает русский и английский языки.
+
+Файлы переводов находятся в `lang/`:
+```
+lang/
+├── en/
+│   └── messages.php
+└── ru/
+    └── messages.php
+```
