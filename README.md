@@ -160,7 +160,7 @@ POST   /api/logout          # Выход
 
 ### Задачи
 ```
-GET    /api/tasks           # Список задач
+GET    /api/tasks           # Список задач + ( perPage / page - опционально )
 GET    /api/tasks/{id}      # Просмотр задачи
 POST   /api/tasks           # Создание задачи
 PUT    /api/tasks/{id}      # Обновление задачи
