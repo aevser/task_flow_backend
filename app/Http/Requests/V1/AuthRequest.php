@@ -22,7 +22,7 @@ class AuthRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', 'email', 'max:255'],
+            'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string']
         ];
     }
@@ -30,11 +30,10 @@ class AuthRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'email.required' => 'Поле email обязательно для заполнения.',
-            'email.email' => 'Введите корректный email адрес.',
-            'email.max' => 'Email не должен превышать 255 символов.',
+            'email.required' => __('validations.auth.email.required'),
+            'email.email' => __('validations.auth.email.email'),
 
-            'password.required' => 'Поле пароль обязательно для заполнения.'
+            'password.required' => __('validations.auth.password.required')
         ];
     }
 }

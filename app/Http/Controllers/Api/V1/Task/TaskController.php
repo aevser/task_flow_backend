@@ -34,24 +34,24 @@ class TaskController extends Controller
 
     public function store(Project $project, CreateTaskRequest $request): JsonResponse
     {
-        if (!$project->enabled) { return $this->message(success: false, message: 'Ошибка добавления задачи. Проект находится в неактуальном состоянии.', code: JsonResponse::HTTP_BAD_REQUEST); }
+        if (!$project->enabled) { return $this->message(success: false, message: __('responses.task.enabled'), code: JsonResponse::HTTP_BAD_REQUEST); }
 
-        $task = $this->taskService->create(project: $project, data: $request->validated(), attachment: $request->file('attachment'));
+        $task = $this->taskService->create(project: $project, data: $request->validated(), attachments: $request->file('attachments'));
 
-        return $this->success(success: true, message: 'Задача успешно добавлена.', data: $task, code: JsonResponse::HTTP_CREATED);
+        return $this->success(success: true, message: __('responses.task.created'), data: $task, code: JsonResponse::HTTP_CREATED);
     }
 
     public function update(int $id, UpdateTaskRequest $request): JsonResponse
     {
         $task = $this->taskRepository->update(id: $id, data: $request->validated());
 
-        return $this->success(success: true, message: 'Задача успешно обновлена.', data: $task, code: JsonResponse::HTTP_OK);
+        return $this->success(success: true, message: __('responses.task.updated'), data: $task, code: JsonResponse::HTTP_OK);
     }
 
     public function destroy(int $id): JsonResponse
     {
         $this->taskRepository->delete(id: $id);
 
-        return $this->message(success: true, message: 'Задача успешно удалена.', code: JsonResponse::HTTP_OK);
+        return $this->message(success: true, message: __('responses.task.deleted'), code: JsonResponse::HTTP_OK);
     }
 }

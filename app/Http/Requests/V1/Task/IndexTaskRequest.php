@@ -26,21 +26,21 @@ class IndexTaskRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'assignee_id.integer' => 'ID исполнителя должен быть числом',
-            'assignee_id.exists' => 'Выбранный исполнитель не существует',
+            'assignee_id.integer' => __('validations.task.index.assignee_id.integer'),
+            'assignee_id.exists' => __('validations.task.index.assignee_id.exists'),
 
-            'status_id.integer' => 'ID статуса должен быть числом',
-            'status_id.exists' => 'Выбранный статус не существует',
+            'status_id.integer' => __('validations.task.index.status_id.integer'),
+            'status_id.exists' => __('validations.task.index.status_id.exists'),
 
-            'due_date.date' => 'Дата завершения должна быть корректной датой',
-            'due_date.date_format' => 'Формат даты должен быть Y-m-d (например, 2025-11-06)',
+            'due_date.date' => __('validations.task.index.due_date.date'),
+            'due_date.date_format' => __('validations.task.index.due_date.date_format'),
 
-            'perPage.integer' => 'Количество элементов на странице должно быть числом',
-            'perPage.min' => 'Минимальное количество элементов на странице: 1',
-            'perPage.max' => 'Максимальное количество элементов на странице: 100',
+            'perPage.integer' => __('validations.task.index.perPage.integer'),
+            'perPage.min' => __('validations.task.index.perPage.min'),
+            'perPage.max' => __('validations.task.index.perPage.max'),
 
-            'page.integer' => 'Номер страницы должен быть числом',
-            'page.min' => 'Номер страницы должен быть больше 0'
+            'page.integer' => __('validations.task.index.page.integer'),
+            'page.min' => __('validations.task.index.page.min')
         ];
     }
 }

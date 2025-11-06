@@ -23,7 +23,7 @@ class UpdateTaskRequest extends FormRequest
     {
         return [
             'assignee_id' => ['nullable', 'integer', 'exists:users,id'],
-            'status_id' => ['nullable', 'integer', 'exists:task_statuses,id'],
+            'status_id' => ['required', 'integer', 'exists:task_statuses,id'],
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:5000'],
             'due_date' => ['nullable', 'date', 'after_or_equal:today']
@@ -33,21 +33,22 @@ class UpdateTaskRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'assignee_id.integer' => 'ID исполнителя должен быть числом',
-            'assignee_id.exists' => 'Выбранный исполнитель не существует',
+            'assignee_id.integer' => __('validations.task.update.assignee_id.integer'),
+            'assignee_id.exists' => __('validations.task.update.assignee_id.exists'),
 
-            'status_id.integer' => 'ID статуса должен быть числом',
-            'status_id.exists' => 'Выбранный статус не существует',
+            'status_id.required' => __('validations.task.update.status_id.required'),
+            'status_id.integer' => __('validations.task.update.status_id.integer'),
+            'status_id.exists' => __('validations.task.update.status_id.exists'),
 
-            'name.required' => 'Название задачи обязательно для заполнения',
-            'name.string' => 'Название задачи должно быть строкой',
-            'name.max' => 'Название задачи не должно превышать 255 символов',
+            'name.required' => __('validations.task.update.name.required'),
+            'name.string' => __('validations.task.update.name.string'),
+            'name.max' => __('validations.task.update.name.max'),
 
-            'description.string' => 'Описание должно быть строкой',
-            'description.max' => 'Описание не должно превышать 5000 символов',
+            'description.string' => __('validations.task.update.description.string'),
+            'description.max' => __('validations.task.update.description.max'),
 
-            'due_date.date' => 'Дата завершения должна быть корректной датой',
-            'due_date.after_or_equal' => 'Дата завершения не может быть в прошлом'
+            'due_date.date' => __('validations.task.update.due_date.date'),
+            'due_date.after_or_equal' => __('validations.update.task.due_date.after_or_equal')
         ];
     }
 }

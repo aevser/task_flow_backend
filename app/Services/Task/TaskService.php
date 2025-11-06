@@ -8,7 +8,6 @@ use App\Models\Project\Task\Task;
 use App\Repositories\Task\TaskRepository;
 use App\Repositories\Task\TaskStatusRepository;
 use App\Services\EmailService;
-use Illuminate\Http\UploadedFile;
 
 class TaskService
 {
@@ -19,13 +18,13 @@ class TaskService
         private EmailService $emailService
     ){}
 
-    public function create(Project $project, array $data, ?UploadedFile $attachment = null): array|Task
+    public function create(Project $project, array $data, ?array $attachments = null): array|Task
     {
         $plannedStatus = $this->taskStatusRepository->findByType(TaskStatus::PLANNED->value);
 
         $task = $this->taskRepository->create(project: $project, statusId: $plannedStatus, data: $data);
 
-        if ($attachment) { $this->taskAttachmentService->addFile(task: $task, uploadedFile: $attachment); }
+        if ($attachments && count($attachments) > 0) { $this->taskAttachmentService->addFiles(task: $task, uploadedFiles: $attachments); }
 
         $this->emailService->send(task: $task);
 

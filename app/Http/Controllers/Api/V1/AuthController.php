@@ -17,7 +17,7 @@ class AuthController extends Controller
     public function login(AuthRequest $request): JsonResponse
     {
         if (!auth()->attempt($request->validated())) {
-            return $this->message(success: false, message: __('responses.user.unauthorized'), code: JsonResponse::HTTP_UNAUTHORIZED);
+            return $this->message(success: false, message: __('responses.auth.invalid_credentials'), code: JsonResponse::HTTP_UNAUTHORIZED);
         }
 
         $user = auth()->user();
@@ -31,6 +31,6 @@ class AuthController extends Controller
     {
         $request->user()->tokens()->delete();
 
-        return $this->message(success: true, message: __('responses.user.logout'), code: JsonResponse::HTTP_OK);
+        return $this->message(success: true, message: __('responses.auth.logout'), code: JsonResponse::HTTP_OK);
     }
 }

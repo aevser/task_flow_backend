@@ -17,13 +17,24 @@ class Task extends Model implements HasMedia
 
     protected $fillable = ['assignee_id', 'project_id', 'status_id', 'name', 'description', 'due_date'];
 
-    protected $appends = ['attachment_url'];
+    protected $appends = ['attachments_urls'];
 
     protected $hidden = ['media'];
 
-    protected function attachmentUrl(): Attribute
+    // Вспомогательные методы
+
+    protected function attachmentsUrls(): Attribute
     {
-        return Attribute::make(get: fn () => $this->getFirstMediaUrl('attachments') ?: null);
+        return Attribute::make(
+            get: function () {
+                return $this->getMedia('attachments')->map(function ($media) {
+                    return [
+                        'id' => $media->id,
+                        'url' => $media->getUrl(),
+                    ];
+                })->toArray();
+            }
+        );
     }
 
     // Связи

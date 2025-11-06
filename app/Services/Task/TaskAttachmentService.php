@@ -7,6 +7,12 @@ use Illuminate\Http\UploadedFile;
 
 class TaskAttachmentService
 {
+    public function addFiles(Task $task, array $uploadedFiles): void
+    {
+        foreach ($uploadedFiles as $uploadedFile) {
+            $this->addFile(task: $task, uploadedFile: $uploadedFile);
+        }
+    }
     public function addFile(Task $task, UploadedFile $uploadedFile): void
     {
         $task->addMedia($uploadedFile)
