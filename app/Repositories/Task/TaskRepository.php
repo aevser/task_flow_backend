@@ -25,7 +25,7 @@ class TaskRepository
 
     public function getOne(int $id): Task
     {
-        return $this->task->query()->findOrFail($id);
+        return $this->task->query()->with(self::RELATIONS)->findOrFail($id);
     }
 
     public function create(Project $project, int $statusId, array $data): Task

@@ -17,9 +17,9 @@ class ProjectSeeder extends Seeder
         $faker = \Faker\Factory::create();
 
         foreach ($users as $user) {
-            $projectCount = rand(1, 3);
+            $projectCounts = rand(1, 3);
 
-            for ($i = 0; $i < $projectCount; $i++) {
+            for ($i = 0; $i < $projectCounts; $i++) {
                 Project::query()->create([
                     'user_id' => $user->id,
                     'name' => $faker->sentence(3),
