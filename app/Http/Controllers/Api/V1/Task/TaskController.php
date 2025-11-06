@@ -8,7 +8,7 @@ use App\Http\Requests\V1\Task\IndexTaskRequest;
 use App\Http\Requests\V1\Task\UpdateTaskRequest;
 use App\Models\Project\Project;
 use App\Repositories\Task\TaskRepository;
-use App\Services\TaskService;
+use App\Services\Task\TaskService;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 
@@ -34,7 +34,9 @@ class TaskController extends Controller
 
     public function store(Project $project, CreateTaskRequest $request): JsonResponse
     {
-        $task = $this->taskService->create(project: $project, data: $request->validated());
+        if (!$project->enabled) { return $this->message(success: false, message: 'Ошибка добавления задачи. Проект находится в неактуальном состоянии.', code: JsonResponse::HTTP_BAD_REQUEST); }
+
+        $task = $this->taskService->create(project: $project, data: $request->validated(), attachment: $request->file('attachment'));
 
         return $this->success(success: true, message: 'Задача успешно добавлена.', data: $task, code: JsonResponse::HTTP_CREATED);
     }
@@ -50,6 +52,6 @@ class TaskController extends Controller
     {
         $this->taskRepository->delete(id: $id);
 
-        return $this->success(success: true, message: 'Задача успешно удалена.', data: null, code: JsonResponse::HTTP_OK);
+        return $this->message(success: true, message: 'Задача успешно удалена.', code: JsonResponse::HTTP_OK);
     }
 }

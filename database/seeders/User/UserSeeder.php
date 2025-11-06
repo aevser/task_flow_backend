@@ -13,6 +13,12 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::query()->create(['name' => 'admin', 'email' => '1@1.ru', 'password' => Hash::make('123456')]);
+        for ($i = 0; $i < 10; $i++) {
+            User::query()->create([
+                'name' => 'user' . $i,
+                'email' => '1@' . $i . '.ru',
+                'password' => Hash::make('123456')
+            ]);
+        }
     }
 }

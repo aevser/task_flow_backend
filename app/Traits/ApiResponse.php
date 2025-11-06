@@ -15,13 +15,13 @@ trait ApiResponse
 
         if ($message) { $response['message'] = $message; }
 
-        $formatted_data = $this->formatResponseData($data);
+        $formattedData = $this->formatResponseData($data);
 
-        if (is_array($formatted_data) && isset($formatted_data['pagination'])) {
-            $response['data'] = $formatted_data['data'];
-            $response['pagination'] = $formatted_data['pagination'];
+        if (is_array($formattedData) && isset($formattedData['pagination'])) {
+            $response['data'] = $formattedData['data'];
+            $response['pagination'] = $formattedData['pagination'];
         } else {
-            $response['data'] = $formatted_data;
+            $response['data'] = $formattedData;
         }
 
         return response()->json($response, $code);
@@ -75,8 +75,8 @@ trait ApiResponse
     {
         return [
             'total' => $paginator->total(),
-            'current_page' => $paginator->currentPage(),
-            'per_page' => $paginator->perPage()
+            'currentPage' => $paginator->currentPage(),
+            'perPage' => $paginator->perPage()
         ];
     }
 }

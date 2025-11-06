@@ -3,6 +3,7 @@
 namespace Database\Seeders\Project;
 
 use App\Models\Project\Project;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class ProjectSeeder extends Seeder
@@ -12,12 +13,20 @@ class ProjectSeeder extends Seeder
      */
     public function run(): void
     {
-        // TODO добавить цикл
-        Project::query()->create([
-            'user_id' => 1,
-            'name' => 'Project 1',
-            'description' => 'Project 1 description',
-            'enabled' => true
-        ]);
+        $users = User::all();
+        $faker = \Faker\Factory::create();
+
+        foreach ($users as $user) {
+            $projectCount = rand(1, 3);
+
+            for ($i = 0; $i < $projectCount; $i++) {
+                Project::query()->create([
+                    'user_id' => $user->id,
+                    'name' => $faker->sentence(3),
+                    'description' => $faker->paragraph(2),
+                    'enabled' => $faker->boolean(80),
+                ]);
+            }
+        }
     }
 }

@@ -26,8 +26,7 @@ class UpdateTaskRequest extends FormRequest
             'status_id' => ['nullable', 'integer', 'exists:task_statuses,id'],
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:5000'],
-            'due_date' => ['nullable', 'date', 'after_or_equal:today'],
-//            'attachment' => ['nullable', 'file', 'max:10240', 'mimes:pdf,doc,docx,xls,xlsx,jpg,jpeg,png,zip']
+            'due_date' => ['nullable', 'date', 'after_or_equal:today']
         ];
     }
 
@@ -48,11 +47,7 @@ class UpdateTaskRequest extends FormRequest
             'description.max' => 'Описание не должно превышать 5000 символов',
 
             'due_date.date' => 'Дата завершения должна быть корректной датой',
-            'due_date.after_or_equal' => 'Дата завершения не может быть в прошлом',
-
-//            'attachment.file' => 'Вложение должно быть файлом',
-//            'attachment.max' => 'Размер файла не должен превышать 10 МБ',
-//            'attachment.mimes' => 'Допустимые форматы файлов: pdf, doc, docx, xls, xlsx, jpg, jpeg, png, zip'
+            'due_date.after_or_equal' => 'Дата завершения не может быть в прошлом'
         ];
     }
 }
